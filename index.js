@@ -9,7 +9,25 @@ const path = {
 };
 
 fs.readdir(root, function(err, items) {
-    console.log(items);
+    console.log(items[0]);
+
+    fs.readFile(`${root}/${items[0]}`, 'utf8', (err, contents) => {
+        console.log(contents);
+    });
+
+    fs.readFile(`${path.gpsData}/${items[0]}`, 'utf8', (err, contents) => {
+        console.log(contents);
+    });
+
+    fs.readFile(`${path.heartRateta}/${items[0]}`, 'utf8', (err, contents) => {
+        console.log(contents);
+    });
+
+    fs.readFile(`${path.speedData}/${items[0]}`, 'utf8', (err, contents) => {
+        console.log(contents);
+    });
+
+    // items.forEach(item => console.log(item));
 });
 
 // const Trackpoint = data => `
