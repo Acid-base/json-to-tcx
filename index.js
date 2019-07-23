@@ -40,29 +40,48 @@ const path = {
 
 const testId = 'f81696e7-0c6a-4c22-89e2-b23da13f3e01.json';
 
-fs.readdir(root, function(err, items) {
-    console.log(items[0]);
+// fs.readdir(root, function(err, items) {
+//     console.log(items[0]);
 
-    fs.readFile(`${root}/${items[0]}`, 'utf8', (err, contents) => {
-        console.log(contents);
+//     fs.readFile(`${root}/${items[0]}`, 'utf8', (err, contents) => {
+//         console.log(contents);
+//     });
+//     fs.readFile(`${path.gpsData}/${items[0]}`, 'utf8', (err, contents) => {
+//         console.log(contents);
+//     });
+//     fs.readFile(`${path.heartRateta}/${items[0]}`, 'utf8', (err, contents) => {
+//         console.log(contents);
+//     });
+//     fs.readFile(`${path.elevationData}/${items[0]}`, 'utf8', (err, contents) => {
+//         console.log(contents);
+//     });
+//     items.forEach(item => console.log(item));
+// });
+
+let data = [];
+
+fs.readFile(`${path.gpsData}/${testId}`, 'utf8', (err, contents) => {
+    console.log(contents);
+    contents.forEach(content => {
+        data.timestamp = content.timestamp;
+        data.longitude = content.longitude;
+        data.latitude = content.latitude;
+        data.altitude = content.altitude;
+        data.distance = content.distance;
     });
-
-    fs.readFile(`${path.gpsData}/${items[0]}`, 'utf8', (err, contents) => {
-        console.log(contents);
+ });
+ fs.readFile(`${path.heartRateta}/${testId}`, 'utf8', (err, contents) => {
+     console.log(contents);
+     contents.forEach(content => {
+        data.timestamp = content.timestamp;
+        data.heart_rate = content.heart_rate;
     });
+ });
+ fs.readFile(`${root}/${testId}`, 'utf8', (err, contents) => {
+     console.log(contents);
+ });
 
-    fs.readFile(`${path.heartRateta}/${items[0]}`, 'utf8', (err, contents) => {
-        console.log(contents);
-    });
-
-    fs.readFile(`${path.speedData}/${items[0]}`, 'utf8', (err, contents) => {
-        console.log(contents);
-    });
-
-    // items.forEach(item => console.log(item));
-});
-
-const Trackpoint = data => `
+const getTrackpoint = data => `
 <Trackpoint>
     <Time>${data.Time}</Time>
     <HeartRateBpm>
@@ -84,7 +103,7 @@ const Trackpoint = data => `
 const Activities = data => `
 <Activities>
     <Activity Sport="${data.Activity}">
-        <Id>${data.Id}</Id>
+        <Id>${data.StartTime}</Id>
         <Lap StartTime="${data.StartTime}">
             <TotalTimeSeconds>${data.TotalTimeSeconds}</TotalTimeSeconds>
             <DistanceMeters>${data.DistanceMeters}</DistanceMeters>
