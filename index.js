@@ -1,4 +1,34 @@
 const fs = require('fs');
+const alias = {
+    sport_type_id: {
+        1: 'running'
+    },
+    StartTime: 'start_time',
+    DistanceMeters: 'distance',
+    TotalTimeSeconds: 'duration',
+    AverageHeartRateBpm: 'pulse_avg',
+    MaximumHeartRateBpm: 'pulse_max',
+    MaximumSpeed: 'max_speed',
+    Calories: 'calories',
+    Notes: 'notes',
+    Cadence: 'avg_cadence',
+
+    heartRateta: {
+        Time: 'timestamp',
+        HeartRateBpm: 'heart_rate',
+        DistanceMeters: 'distance'
+    },
+
+    gpsData: {
+        Time: 'timestamp',
+        LatitudeDegrees: 'latitude',
+        LongitudeDegrees: 'longitude'
+    },
+
+    elevationData: {
+        AltitudeMeters: 'elevation'
+    }
+};
 
 const root = './Sport-sessions';
 const path = {
@@ -7,6 +37,8 @@ const path = {
     heartRateta: `${root}/Heart-rate-data`,
     speedData: `${root}/Speed-data`
 };
+
+const testId = 'f81696e7-0c6a-4c22-89e2-b23da13f3e01.json';
 
 fs.readdir(root, function(err, items) {
     console.log(items[0]);
@@ -30,49 +62,50 @@ fs.readdir(root, function(err, items) {
     // items.forEach(item => console.log(item));
 });
 
-// const Trackpoint = data => `
-// <Trackpoint>
-//     <Time>${data.Time}</Time>
-//     <HeartRateBpm>
-//         <Value>${data.HeartRateBpm}</Value>
-//     </HeartRateBpm>
-//     <DistanceMeters>${data.DistanceMeters}</DistanceMeters>
-//     <AltitudeMeters>${data.AltitudeMeters}</AltitudeMeters>
-//     <Position>
-//         <LatitudeDegrees>${data.LatitudeDegrees}</LatitudeDegrees>
-//         <LongitudeDegrees>${data.LongitudeDegrees}</LongitudeDegrees>
-//     </Position>
-// </Trackpoint>
-// `;
+const Trackpoint = data => `
+<Trackpoint>
+    <Time>${data.Time}</Time>
+    <HeartRateBpm>
+        <Value>${data.HeartRateBpm}</Value>
+    </HeartRateBpm>
+    <DistanceMeters>${data.DistanceMeters}</DistanceMeters>
+    <AltitudeMeters>${data.AltitudeMeters}</AltitudeMeters>
+    <Position>
+        <LatitudeDegrees>${data.LatitudeDegrees}</LatitudeDegrees>
+        <LongitudeDegrees>${data.LongitudeDegrees}</LongitudeDegrees>
+    </Position>
+</Trackpoint>
+`;
 
 // const Track = trackPoint.reduce((acc, item) => {
 //     return acc += Trackpoint(data);
 // }, '');
 
-// const Activities = data => `
-// <Activities>
-//     <Activity Sport="${data.Activity}">
-//         <Id>${data.Id}</Id>
-//         <Lap StartTime="${data.Lap}">
-//             <TotalTimeSeconds>${data.TotalTimeSeconds}</TotalTimeSeconds>
-//             <DistanceMeters>${data.DistanceMeters}</DistanceMeters>
-//             <Calories>${data.Calories}</Calories>
-//             <AverageHeartRateBpm>
-//                 <Value>${data.AverageHeartRateBpm}</Value>
-//             </AverageHeartRateBpm>
-//             <MaximumHeartRateBpm>
-//                 <Value>${data.MaximumHeartRateBpm}</Value>
-//             </MaximumHeartRateBpm>
-//             <MaximumSpeed>${data.MaximumSpeed}</MaximumSpeed>
-//             <Cadence>${data.Cadence}</Cadence>
-//             <TriggerMethod>${data.TriggerMethod}</TriggerMethod>
-//             <Track>
-//                 ${Track}
-//             </Track>
-//         </Lap>
-//         </Activity>
-// </Activities>
-// `;
+const Activities = data => `
+<Activities>
+    <Activity Sport="${data.Activity}">
+        <Id>${data.Id}</Id>
+        <Lap StartTime="${data.StartTime}">
+            <TotalTimeSeconds>${data.TotalTimeSeconds}</TotalTimeSeconds>
+            <DistanceMeters>${data.DistanceMeters}</DistanceMeters>
+            <Calories>${data.Calories}</Calories>
+            <AverageHeartRateBpm>
+                <Value>${data.AverageHeartRateBpm}</Value>
+            </AverageHeartRateBpm>
+            <MaximumHeartRateBpm>
+                <Value>${data.MaximumHeartRateBpm}</Value>
+            </MaximumHeartRateBpm>
+            <MaximumSpeed>${data.MaximumSpeed}</MaximumSpeed>
+            <Notes>${data.Notes}</Notes>
+            <Cadence>${data.Cadence}</Cadence>
+            <TriggerMethod>${data.TriggerMethod}</TriggerMethod>
+            <Track>
+                ${Track}
+            </Track>
+        </Lap>
+        </Activity>
+</Activities>
+`;
 
 // const TrainingCenterDatabase = `
 // <?xml version="1.0" encoding="UTF-8"?>
