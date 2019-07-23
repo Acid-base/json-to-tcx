@@ -1,3 +1,8 @@
+const gpsData = require('./Sport-sessions/GPS-data');
+const elevationData = require('./Sport-sessions/Elevation-data');
+const heartRateData = require('./Sport-sessions/Heart-rate-data');
+const speedData = require('./Sport-sessions/Speed-data');
+
 const Trackpoint = data => `
 <Trackpoint>
     <Time>${data.Time}</Time>
