@@ -34,7 +34,7 @@ const root = './Sport-sessions';
 const path = {
     gpsData: `${root}/GPS-data`,
     elevationData: `${root}/Elevation-data`,
-    heartRateta: `${root}/Heart-rate-data`,
+    heartRateData: `${root}/Heart-rate-data`,
     speedData: `${root}/Speed-data`
 };
 
@@ -60,26 +60,44 @@ const testId = 'f81696e7-0c6a-4c22-89e2-b23da13f3e01.json';
 
 let data = [];
 
-fs.readFile(`${path.gpsData}/${testId}`, 'utf8', (err, contents) => {
-    console.log(contents);
-    contents.forEach(content => {
-        data.timestamp = content.timestamp;
-        data.longitude = content.longitude;
-        data.latitude = content.latitude;
-        data.altitude = content.altitude;
-        data.distance = content.distance;
-    });
- });
- fs.readFile(`${path.heartRateta}/${testId}`, 'utf8', (err, contents) => {
-     console.log(contents);
-     contents.forEach(content => {
-        data.timestamp = content.timestamp;
-        data.heart_rate = content.heart_rate;
-    });
- });
- fs.readFile(`${root}/${testId}`, 'utf8', (err, contents) => {
-     console.log(contents);
- });
+let gpsData = fs.readFileSync(`${path.gpsData}/${testId}`, 'utf8');
+let heartRateData = fs.readFileSync(`${path.heartRateData}/${testId}`, 'utf8');
+
+gpsData && JSON.parse(gpsData).forEach(content => {
+    let obj = {};
+    obj.timestamp = content.timestamp;
+    obj.longitude = content.longitude;
+    obj.latitude = content.latitude;
+    obj.altitude = content.altitude;
+    obj.distance = content.distance;
+
+    data.push(obj);
+});
+
+
+heartRateData = JSON.parse(heartRateData);
+
+ let i = 0;
+ data.forEach(item => {
+     for (i; i < heartRateData.length;) {
+         let current = heartRateData[i].heart_rate;
+         let prev = i && heartRateData[i-1].heart_rate;
+
+         if (item.distance === heartRateData[i].distance) {
+             item.heart_rate = current;
+             i++;
+         } else if (item.distance < heartRateData[i].distance) {
+             item.heart_rate = prev;
+         }
+         break;
+     }
+});
+
+console.log(data);
+
+//  fs.readFile(`${root}/${testId}`, 'utf8', (err, contents) => {
+//     //  console.log(contents);
+//  });
 
 const getTrackpoint = data => `
 <Trackpoint>
